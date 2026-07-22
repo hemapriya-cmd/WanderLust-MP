@@ -10,6 +10,9 @@ const path = require("path");
 
 const methodOverride = require("method-override");
 
+const ejsMate = require("ejs-mate");
+
+
 
 main()
     .then(() => {
@@ -27,6 +30,8 @@ app.set("view engine" , "ejs");
 app.set("views" , path.join(__dirname , "views"));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
+app.engine("ejs" , ejsMate);
+app.use(express.static(path.join(__dirname,"/public")))
 
 app.get("/" , (req,res) => {
     res.send(" i am root");
@@ -38,17 +43,18 @@ app.get("/listing" , async(req,res) => {
     res.render("listings/index.ejs" , {allListings});
 });
 
+
+//new route
+app.get("/listing/new" , (req,res) => {
+    res.render("listings/new.ejs");
+})
+
 //show route
 app.get("/listing/:id" , async(req,res) => {
     let {id} = req.params;
     const listing = await Listing.findById(id);
     res.render("listings/show.ejs" , {listing});
 });
-
-//new route
-app.get("/listing/new" , (req,res) => {
-    res.render("listings/new.ejs");
-})
 
 //create Route
 app.post("/listing" , async(req,res) => {
