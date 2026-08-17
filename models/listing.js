@@ -16,25 +16,63 @@ const listingSchema = new Schema({
     price : Number,
     location : String,
     country : String,
-    reviews : [
+    propertyType: {
+        type: String,
+        enum: [
+            "Villa",
+            "Apartment",
+            "Cottage",
+            "Homestay",
+            "Resort",
+            "Treehouse",
+            "Cabin",
+            "Farmhouse",
+            "Tent",
+            "Beach House",
+            "Houseboat",
+            "Bungalow",
+            "Studio",
+            "Luxury Suite",
+            "Heritage Haveli"
+        ]
+    },
+
+    amenities: [String],
+
+    rating: {
+    type: Number,
+    min: 0,
+    max: 5,
+    default: 4.5,
+},
+
+    bedrooms: Number,
+
+    bathrooms: Number,
+
+    maxGuests: Number,
+
+    reviews: [
         {
-            type : Schema.Types.ObjectId,
-            ref : "Review",
+            type: Schema.Types.ObjectId,
+            ref: "Review",
         }
     ],
-    owner : {
-        type : Schema.Types.ObjectId,
-        ref : "User",
+
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
     },
-    geometry : {
+
+    geometry: {
         type: {
-            type: String, // Don't do `{ location: { type: String } }`
-            enum: ['Point'], // 'location.type' must be 'Point'
-            required: true
+            type: String,
+            enum: ["Point"],
+            required: true,
         },
         coordinates: {
-        type: [Number],
-        required: true
+            type: [Number],
+            required: true,
         },
     },
 });
